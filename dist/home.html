@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StaySafeAI | Graphs/Charts</title>
+    <script defer src="./bundle.js"></script>
+    <link rel="stylesheet" type="text/css" href="style2.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Data From Firebase to DataTables -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    
+<!-- src for chartjs -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<link rel="shortcut icon" type="x-icon" href="staysafeailogo.png">
+
+
+</head>
+
+<body>
+
+  <!-- navbar start -->
+    <nav class="navbar navbar-expand-lg ">
+      
+        <div class="container-fluid">
+          
+          <a class="navbar-brand" style="color: black; text-shadow: 1px 1px #ffffff;">StaySafeAI<span id="username"></span></a> 
+
+          <button type="button" id="logout" name="logout" class="btn btn-secondary active" style="text-shadow: 1px 1px #000000; box-shadow: 2px 2px 4px rgba(0, 0, 0, 1);">Logout</button>
+          </div></nav>
+
+    <!-- navbar end -->
+          
+          <div class="card">
+            <div class="card-body success">
+              <h3 class="card-title" style="text-shadow: 2px 2px #ffffff;">Student's Graph/Chart Visualization</h3><br>
+              <br>
+
+            <!-- charts code  -->
+            <div>
+              <h5 style="display: inline-block; margin-left: 120px;">Total Number of Students Inside Classroom </h5>
+              <h5 style="display: inline-block; margin-left: 160px;">Student Limitation Inside the Room</h5>
+            </div>
+
+            <div class="chart-container">
+              <!-- pie chart -->
+              <br>
+              <canvas id="bar"></canvas>
+            
+              <br>
+              <div id="peopleCounterContainer">
+                <h5></h5>
+                <div id="peopleCounter"></div>
+                
+            </div>
+          
+            </div>
+          </div>
+                  
+          <br>
+
+</body>
+</html> 
+
+  
+
+<script>
+    // Initialize Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyBYgMIcVn0yp5JHvUpgsW04MmX1zABcoHg",
+        authDomain: "staysafe-ai.firebaseapp.com",
+        databaseURL: "https://staysafe-ai-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "staysafe-ai",
+        storageBucket: "staysafe-ai.appspot.com",
+        messagingSenderId: "256408927004",
+        appId: "1:256408927004:web:11de081a43a7266a2958d9",
+        measurementId: "G-YQ8BFZP4FR"
+};
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    //logout function 
+    const logoutBtn = document.querySelector("#logout");
+    logoutBtn.addEventListener("click", ()=>{
+    window.location.replace("login.html");
+      });
+
+    // Fetch data from Firebase Realtime Database
+    function fetchData() {
+      const dataRef = database.ref("counts");
+        dataRef.on("value", function(snapshot) {
+          const data = snapshot.val();
+          const labels = Object.keys(data);
+          const values = Object.values(data);
+
+    // Update the pie chart
+        const pieChart = Chart.getChart("bar");
+            if (pieChart) {
+                pieChart.data.labels = labels;
+                pieChart.data.datasets[0].data = values;
+                pieChart.update();
+                } else {
+                    const pieCtx = document.getElementById("bar").getContext("2d");
+                    new Chart(pieCtx, {
+                        type: "bar",
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: "Data",
+                                    data: values,
+                                    backgroundColor: ["#20B2AA", "#DDA0DD", "#808080"],
+                                    borderColor: "rgba(75, 192, 192, 1)",
+                                    borderWidth: 1
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+
+            // Update the people counter value
+             const peopleCounterDiv = document.getElementById("peopleCounter");
+             peopleCounterDiv.innerHTML = `
+             <ul>
+              ${labels
+              .map(
+               (label, index) =>
+              `<li><span class="peopleCountCircle ${
+                values[index] > 30 ? 'redCircle blink' : 'greenCircle'
+              }"></span> ${label}: ${values[index]}</li>`
+            )
+            .join('')}
+      </ul>
+    `;
+            });
+        }
+
+    // Call fetchData function to fetch and display data 
+    fetchData();
+</script>
+</body>
+</html>

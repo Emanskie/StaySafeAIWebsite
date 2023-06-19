@@ -1,0 +1,115 @@
+body {
+    background-image: url("dashboard.jpg");
+      height: 100vh;
+      background-position: center;
+       background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+  }
+  
+  
+  .btn-secondary.active,
+  .btn-secondary:active,
+  .open > .dropdown-toggle.btn-secondary {
+    color: #ffff;
+    background-color: #6c757d ;
+    border-color: #6c757d ;
+  }
+  #logout:hover {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  #homie:hover {
+    color: #000000;
+    background-color: #29fa6e;
+    border-color: #29fa6e;
+  }
+  
+  
+  .card {
+  
+      width: 1200px;
+      height: 600px;
+      margin: 20px auto;
+    
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border:1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+  
+  .navbar {
+    background: rgb(144,231,238);
+    background: linear-gradient(0deg, rgba(144,231,238,1) 0%, rgba(144,231,238,1) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+  
+  .chart-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 50px;
+  }
+  
+  .chart-container canvas {
+    width: 60%;
+  }
+  
+  #bar{
+    max-width:350px;
+    max-height:350px;
+  }
+
+  #peopleCounterContainer {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+  }
+
+  #peopleCounter {
+    margin-top: 20px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+  }
+
+  .peopleCountCircle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    display: inline-block;
+ }
+
+  .redCircle {
+    background-color: red;
+ }
+
+  .greenCircle {
+    background-color: green;
+  }
+
+  @keyframes blink-animation {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  .blink {
+    animation: blink-animation 1s infinite;
+  }
